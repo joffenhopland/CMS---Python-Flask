@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block title %}Home page{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div>
+  <ul class=flashes>
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="allcontent">
+  <!-- Sidebar left -->
+  <div class="sidebar-left">
+    <h2 class="h2h"> Tags </h2>
+    <p color="black"> Show files based on tags </p>
+    <ul class="tags-sidebar"></ul>
+    {% for tag in tags %}
+    <li class="tags-sidebar">
+      <a class="tags-sidebar" href="?tagid={{ tag[0] }}"> {{ tag[1] }} </a>
+    </li>
+    {% endfor %}
+    </ul>
+  </div>
+  <!-- Main content -->
+  <div class="main-content">
+    <h2> JK CMS system </h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <!-- Your Columns HERE -->
+          <th scope="col">File / Folder</th>
+          <th scope="col">Name</th>
+          <th scope="col">Published</th>
+          <th scope="col">Title</th>
+          <th scope="col">Views</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Your rows inside the table HERE: -->
+        {% for folder in folders %}
+        <tr>
+          <td> <a href="?folderId={{ folder[0] }}"> <i class="material-icons"
+                style="font-size:48px;color:rgb(51, 86, 225)">folder</i> </a> </td>
+          <td>{{folder[1]}}</td>
+          <td> --- </td>
+          <td> --- </td>
+          <td> --- </td>
+        </tr>
+        {% endfor %}
+
+        {% for document in documents %}
+        <tr>
+          <td> <a href="{{ url_for('show_document', docId=document[0]) }}"> <i class="material-symbols-outlined"
+                style="font-size:48px;color:rgb(27, 44, 70);font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0">file_open</i>
+            </a> </td>
+          <td> {{ document[9] }} </td>
+          <td> {{ document[3] }} </td>
+          <td> {{ document[1] }} </td>
+          <td> {{ document[7] }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Sidebar right -->
+    <div class="sidebar-right">
+      {% if current_user.id or current_user.adgang == 1 %}
+      <div class="button-file">
+        <a href="{{ url_for('new_document_page', folderId = parent )}}" class="button-file2"> Upload file </a>
+      </div>
+      <div class="f-icon">
+        <i class="material-icons" style="font-size:15px;color:rgb(51, 86, 225)">folder</i>
+        <a href="?createfolder=True&folderId={{ parent }}"> Create new folder </a>
+      </div>
+      {% endif %}
+      <div class="home-text">
+        <p> We hope you enjoy our CMS system! Remember, when you create a new folder or upload
+          a new file, the new item is placed inside the current folder or on the home page.
+        </p>
+      </div>
+      {% if form %}
+      <form class="search-form" method="POST">
+        {{ form.csrf_token }}
+        {{ form.search(class="form-control", placeholder="Search files") }}
+        {{ form.submit(class="button-control")}}
+      </form>
+      {% else %}
+      <form class="search-form" method="POST">
+        {{ folder_form.csrf_token }}
+        {{ folder_form.navn.label()}} <br>
+        {{ folder_form.navn(class="form-control", placeholder="Folder name") }}
+        {{ folder_form.submit(class="button-control")}} <br> <br>
+        {{ folder_form.tilgang.label()}} <br>
+        {{ folder_form.tilgang(class="form-control", placeholder="Folder name") }}
+      </form>
+      {% endif %}
+      </form>
+    </div>
+  </div>
+  {% endblock %}

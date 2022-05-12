@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}New document{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+  {% for category, message in messages %}
+  <li class="{{ category }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<div class="doc-first">
+  <h1>New file</h1>
+  <p> Let's upload a file together. You can to this!!</p>
+</div>
+<div class="container-form">
+  <form class="forms docform" method="POST" enctype='multipart/form-data'>
+    {{ form.csrf_token }}
+    {{ form.tittel.label(class="text-control") }} <br>
+    {{ form.tittel(class="form-input", placeholder="Title") }}
+    <br>
+    {{ form.beskrivelse.label(class="text-control") }} <br>
+    {{ form.beskrivelse(class="form-input",placeholder="Description") }}
+    <br>
+    {{ form.tilgang.label(class="text-control") }} <br>
+    {{ form.tilgang(class="form-input select",placeholder="Access") }}
+    <br>
+    {{ form.tag.label(class="text-control") }} <br>
+    {{ form.tag(class="form-input",placeholder="Tag1, tag2, tag3...")}}
+    <br>
+    {{ form.fil(class="form-input") }} <br>
+    <div class="button-place">
+      {{ form.submit(class="submit-form")}}
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+  {% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined" />
+  <title>{% block title %}{% endblock %} - CMS</title>
+  {% endblock %}
+</head>
+
+<body>
+  <div class="navbar">
+    {% block nav %}
+    {% if current_user.id %}
+    <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('logout_page') }}">Log out</a>
+    {% else %}
+    <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('login_page') }}">Log in</a>
+    <a href="{{ url_for('register_page') }}">Register</a>
+    {% endif %}
+    {% endblock %}
+    <!-- <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('login_page') }}">Log in</a>
+    <a href="{{ url_for('logout_page') }}">Log out</a>
+    <a href="{{ url_for('register_page') }}">Register</a> -->
+  </div>
+
+  <div class="content">{% block content %}{% endblock %}</div>
+  <div class="footer">
+    {% block footer %}
+    <p>&copy; Copyright 2022 by Joffen and Kristoffer.</p>
+    {% endblock %}
+  </div>
+</body>
+
+</html>

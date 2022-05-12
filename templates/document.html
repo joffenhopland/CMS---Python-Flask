@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block title %} Documents {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+  {% for category, message in messages %}
+  <li class="{{ category }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<div class="doc-content">
+  <h1> You are now looking at {{ document[1] }} </h1>
+  <h3> Click on the file icon to preview the document </h3>
+</div>
+<div class="doc-body">
+  <div class="filebox">
+    <h2 class="h2-file"> Document info </h2>
+    <div class="filebox1">
+      <p class="p-file"> <b>Title: </b> {{ document[1] }} </p>
+      <p class="p-file"> <b> Description: </b> {{ document[2] }} </p>
+      <p class="p-file"> <b> File name: </b> {{ document[9] }} </p>
+      <p class="p-file"> <b> File type: </b> {{ document[10] }} </p>
+      <p class="p-file"> <b> Views: </b> {{ document[7] }} </p>
+      <p class="p-file"> <b>Published: </b> {{ document[3] }} </p>
+    </div>
+    <div class="filebox2">
+      <a href='{{ url_for("preview_page", docId=document[0]) }}'><i class="material-symbols-outlined"
+          style="font-size:200px;color:rgb(27, 44, 70);font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0">file_open</i>
+      </a>
+    </div>
+    {% if current_user.id == document[6] or current_user.adgang == 1 %}
+    <div class="button-file">
+      <a href="{{ url_for('edit_document_page', docId=document[0])}}" class="button-file-edit"> Edit file </a>
+    </div>
+    <div class="button-file22">
+      <form method="post" action="{{ url_for('delete_document_page', docId=document[0]) }}">
+        {{ form.csrf_token }}
+        <input class="button-file-delete" type="submit" name="delete" value="Delete file">
+      </form>
+    </div>
+    {% endif %}
+  </div>
+  <div class="infobox">
+    {% if current_user.id or current_user.adgang == 1 %}
+    <h2 class="h2-file"> Make a comment </h2>
+    <p class="p-comment"> To make a comment on this document, just fill out the form below and hit the submit button!
+      We do not tollerate any harassement and will delete any comments that are against our policy.
+    </p>
+    <form class="forms docform" id="commentform" method="POST" enctype='multipart/form-data'>
+      {{ comment_form.csrf_token }}
+      {{ comment_form.tittel.label(class="text-control") }} <br>
+      {{ comment_form.tittel(class="form-input", placeholder="Title") }}
+      <br>
+      {{ comment_form.kommentar.label(class="text-control") }} <br>
+      {{ comment_form.kommentar(class="form-input", placeholder="Write your comment here...") }}
+      <br>
+      <div class="button-place">
+        {{ comment_form.submit(class="submit-form")}}
+      </div>
+    </form>
+    {% endif %}
+  </div>
+</div>
+<div class="newbox">
+  <div class="commentbox">
+    <h2 class="h2-com"> Comments </h2>
+    {% for comment in all_comments %}
+    <div class="comment">
+      <div class="comment-body">
+        <h5>{{ comment[1] }}</h5>
+        <p>{{ comment[2] }}</p>
+        <p>{{ comment[3] }}</p>
+
+        {% if current_user.id == comment[5] or current_user.adgang == 1 %}
+        <div class="button-comment-delete">
+          <form method="post" action="{{ url_for('delete_comment_page', comment_id=comment[0]) }}">
+            {{ comment_form.csrf_token }}
+            <input class="button-file-delete" type="submit" name="delete" value="Delete comment">
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+
+{% endblock %}

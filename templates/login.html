@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Log in{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+  {% for category, message in messages %}
+  <li class="{{ category }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<div class="doc-first">
+  <h1>Log in</h1>
+</div>
+<div class="container-form">
+  <form class="forms docform" method="POST" enctype='multipart/form-data'>
+    {{ form.csrf_token }}
+    {{ form.epost.label(class="text-control") }}<br>
+    {{ form.epost(class="form-input",placeholder="Email") }}
+    <br>
+    {{ form.password.label(class="text-control") }}<br>
+    {{ form.password(class="form-input",placeholder="Password") }}
+    <br>
+    <div class="button-place">
+      {{ form.submit(class="submit-form",placeholder="Log in") }}
+    </div>
+  </form>
+</div>
+{% endblock %}
