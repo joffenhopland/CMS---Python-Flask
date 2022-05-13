@@ -73,9 +73,10 @@ class db:
             cursor.execute(
                 "SELECT * FROM bruker WHERE epost=(%s)", (epost,))
             result = cursor.fetchone()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
+
 
     def getUser2(self, kode):
         try:
@@ -84,9 +85,9 @@ class db:
             cursor.execute(
                 "SELECT * FROM bruker WHERE verifiseringskode=(%s)", (kode,))
             result = cursor.fetchone()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
 
     def getPasswordHash(self, epost):
         try:
@@ -163,9 +164,9 @@ class db:
             cursor.execute(
                 "SELECT * FROM kommentar WHERE dokument_docId=(%s)", (docId,))
             result = cursor.fetchall()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
 
     def getSpecificComment(self, comment_id):
         try:
@@ -174,9 +175,9 @@ class db:
             cursor.execute(
                 "SELECT * FROM kommentar WHERE id=(%s)", (comment_id,))
             result = cursor.fetchone()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
 
     def deleteComment(self, id):
         try:
@@ -195,9 +196,9 @@ class db:
             cursor.execute(
                 "SELECT * FROM dokument")
             result = cursor.fetchall()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
 
     def getDocument(self, id):
         try:
@@ -206,9 +207,43 @@ class db:
             cursor.execute(
                 "SELECT * FROM dokument WHERE docId=(%s)", (id,))
             result = cursor.fetchone()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
+
+    def getOwner(self, id):
+        try:
+            conn = mysql.connector.connect(**self.configuration)
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT bruker_id FROM dokument WHERE docId=(%s)", (id,))
+            result = cursor.fetchone()
+            return result[0]
+        except mysql.connector.Error as err:
+            print(err)
+
+    def getOwner2(self, id):
+        try:
+            conn = mysql.connector.connect(**self.configuration)
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT bruker_id FROM kommentar WHERE id=(%s)", (id,))
+            result = cursor.fetchone()
+            return result[0]
+        except mysql.connector.Error as err:
+            print(err)
+
+    def getAdgang(self, id):
+        try:
+            conn = mysql.connector.connect(**self.configuration)
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT tilgang FROM dokument WHERE docId=(%s)", (id,))
+            result = cursor.fetchone()
+            return result[0]
+        except mysql.connector.Error as err:
+            print(err)
+
 
     def getViews(self, id):
         try:
@@ -217,9 +252,9 @@ class db:
             cursor.execute(
                 "SELECT visninger FROM dokument WHERE docId=(%s)", (id,))
             result = cursor.fetchone()
+            return result[0]
         except mysql.connector.Error as err:
             print(err)
-        return result[0]
 
     def updateViews(self, views, id):
         try:
@@ -241,9 +276,9 @@ class db:
             cursor.execute(
                 "SELECT tagname FROM tag")
             result = cursor.fetchall()
+            return result
         except mysql.connector.Error as err:
             print(err)
-        return result
 
     def tags(self):
         try:
@@ -459,3 +494,4 @@ class db:
             return result
         except mysql.connector.Error as err:
             print(err)
+

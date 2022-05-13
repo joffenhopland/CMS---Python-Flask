@@ -24,7 +24,6 @@ bcrypt = Bcrypt(app)
 app.config['MAIL_SERVER'] = 'smtpserver.uit.no'
 app.config['MAIL_PORT'] = 587
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-# app.config.from_pyfile('config.py')
 
 
 # Login manager
@@ -101,10 +100,10 @@ def home_page():
 
 @ app.route('/document/<int:docId>', methods=["GET", "POST"])
 def show_document(docId):
-    if current_user.is_authenticated:
+    database = db()
+    if current_user.is_authenticated or database.getAdgang(docId) == 0:
         comment_form = CommentForm(request.form)
         form = DokumentForm()
-        database = db()
         views = database.getViews(docId)
         views += 1
         database.updateViews(views, docId)
@@ -124,8 +123,8 @@ def show_document(docId):
             return redirect(url_for('show_document', docId=docId))
         else:
             return render_template("document.html", document=document, comment_form=comment_form, all_comments=all_comments, form=form)
-    else:
-        return redirect(url_for("home_page", docId=docId))
+    
+    return redirect(url_for("home_page", docId=docId))
 
 
 @ app.route('/register', methods=["GET", "POST"])
@@ -157,7 +156,7 @@ def register_page():
 
 @ app.route('/register-landing-page', methods=["GET", "POST"])
 def register_landing_page():
-    render_template('register_landing_page')
+    return render_template('register_landing_page')
 
 
 @ app.route('/verifisert/<kode>')
@@ -272,8 +271,8 @@ def allowed_file(filename):
 @ app.route('/delete/<int:docId>', methods=["GET", "POST"])
 @ login_required
 def delete_document_page(docId):
-    if current_user.is_authenticated:
-        database = db()
+    database = db()
+    if current_user.is_authenticated and current_user.id == database.getOwner(docId):
         database.deleteDocument(docId)
         folderId = request.args.get("folderId")
         if folderId:
@@ -282,15 +281,15 @@ def delete_document_page(docId):
         else:
             flash("Successfully deleted document!", "success")
             return redirect(url_for('home_page'))
-    else:
-        return redirect(url_for("home_page"))
+    
+    return redirect(url_for("home_page"))
 
 
 @ app.route('/edit-document/<int:docId>', methods=["GET", "POST"])
 @ login_required
 def edit_document_page(docId):
-    if current_user.is_authenticated:
-        database = db()
+    database = db()
+    if current_user.is_authenticated and current_user.id == database.getOwner(docId):
         get_document = database.getDocument(docId)
         doc_object = Document(*get_document)
         # turn document tuple into an object to pre populate the edit form
@@ -311,31 +310,39 @@ def edit_document_page(docId):
 
 @ app.route('/preview/<int:docId>')
 def preview_page(docId):
+    database = db()
     if current_user.is_authenticated:
-        database = db()
         get_document = database.getDocument(docId)
         doc_object = Document(*get_document)
         image_bytes = doc_object.fil
         bytes_io = BytesIO(image_bytes)
         filename = doc_object.dokumentnavn
         return send_file(bytes_io, attachment_filename=filename)
-    else:
-        return redirect(url_for("home_page"))
+    elif database.getAdgang(docId) == 0:
+        get_document = database.getDocument(docId)
+        doc_object = Document(*get_document)
+        image_bytes = doc_object.fil
+        bytes_io = BytesIO(image_bytes)
+        filename = doc_object.dokumentnavn
+        return send_file(bytes_io, attachment_filename=filename)
+    
 
 
 @ app.route('/delete-comment/<int:comment_id>', methods=["GET", "POST"])
 @ login_required
 def delete_comment_page(comment_id):
-    if current_user.is_authenticated:
-        database = db()
+    database = db()
+    if current_user.is_authenticated and current_user.id == database.getOwner2(comment_id):
         comment = database.getSpecificComment(comment_id)
         docId = comment[4]
         database.deleteComment(comment_id)
         flash("Successfully deleted comment!", "success")
         return redirect(url_for('show_document', docId=docId))
+    
+    return redirect(url_for("home_page"))
 
 
 app.secret_key = secrets.token_urlsafe(16)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
