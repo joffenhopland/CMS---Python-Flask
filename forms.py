@@ -14,7 +14,7 @@ class RegistrerForm(FlaskForm):
                              Length(min=6), DataRequired()])
     passord2 = PasswordField(label="Repeat password:", validators=[EqualTo(
         "passord1", message="Both passwords should be equal."), DataRequired()])
-    submit = SubmitField(label="Register account")
+    submit = SubmitField(label="Register")
 
 
 class LoginForm(FlaskForm):
@@ -45,7 +45,7 @@ class CommentForm(FlaskForm):
 
 
 class Katalog(FlaskForm):
-    tilgang = RadioField(label="Open or restricted?", choices=[
+    tilgang = RadioField(label="Access", choices=[
                          (0, "Open"), (1, "Restricted")], validators=[DataRequired()])
     navn = StringField(label="Folder name", validators=[DataRequired()])
     submit = SubmitField(label="Create")

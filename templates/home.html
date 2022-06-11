@@ -19,19 +19,56 @@
 <div class="allcontent">
   <!-- Sidebar left -->
   <div class="sidebar-left">
-    <h2 class="h2h"> Tags </h2>
-    <p color="black"> Show files based on tags </p>
-    <ul class="tags-sidebar"></ul>
-    {% for tag in tags %}
-    <li class="tags-sidebar">
-      <a class="tags-sidebar" href="?tagid={{ tag[0] }}"> {{ tag[1] }} </a>
-    </li>
-    {% endfor %}
-    </ul>
+    <div>
+      <h2 class="h2h"> Tags </h2>
+      <span class="material-symbols-outlined"
+        style="font-size:32px;color:rgb(45, 45, 45);font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0">
+        sell
+      </span>
+    </div>
+
+    <!-- <p color="black"> Show files based on tags </p> -->
+    <div>
+      <ul class="tags-sidebar"></ul>
+      {% for tag in tags %}
+      <li class="tags-sidebar">
+        <a class="tags-sidebar" href="?tagid={{ tag[0] }}"> {{ tag[1] }} </a>
+      </li>
+      {% endfor %}
+      </ul>
+    </div>
   </div>
   <!-- Main content -->
   <div class="main-content">
-    <h2> JK CMS system </h2>
+    <div class="create-upload-search">
+      {% if current_user.id or current_user.adgang == 1 %}
+      <div class="button-file">
+        <a href="{{ url_for('new_document_page', folderId = parent )}}" class="btn btn-primary"> Upload file </a>
+      </div>
+      <div class="f-icon">
+        <!-- <i class="material-icons" style="font-size:32px;color:rgb(51, 86, 225)">folder</i> -->
+        <a href="?createfolder=True&folderId={{ parent }}" class="btn btn-secondary"> Create new folder </a>
+      </div>
+      {% endif %}
+      {% if form %}
+      <form class="search-form" method="POST">
+        {{ form.csrf_token }}
+        <div style="padding-right: 20px;"> {{ form.search(class="form-control", placeholder="Search files") }}
+        </div>
+        <div> {{ form.submit(class="btn btn-success")}}
+        </div>
+      </form>
+      {% else %}
+      <form class="search-form-folder" method="POST">
+        {{ folder_form.csrf_token }}
+        {{ folder_form.navn.label()}} <br>
+        {{ folder_form.navn(class="form-control", placeholder="Folder name") }} <br>
+        {{ folder_form.tilgang.label()}} <br>
+        {{ folder_form.tilgang(class="form-control") }}
+        {{ folder_form.submit(class="btn btn-success")}}
+      </form>
+      {% endif %}
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -41,7 +78,6 @@
           <th scope="col">Published</th>
           <th scope="col">Title</th>
           <th scope="col">Views</th>
-          <th scope="col"> Beskrivelse </th>
         </tr>
       </thead>
       <tbody>
@@ -49,9 +85,8 @@
         {% for folder in folders %}
         <tr>
           <td> <a href="?folderId={{ folder[0] }}"> <i class="material-icons"
-                style="font-size:48px;color:rgb(51, 86, 225)">folder</i> </a> </td>
+                style="font-size:48px;color:rgb(120, 160, 248)">folder</i> </a> </td>
           <td>{{folder[1]}}</td>
-          <td> --- </td>
           <td> --- </td>
           <td> --- </td>
           <td> --- </td>
@@ -61,26 +96,25 @@
         {% for document in documents %}
         <tr>
           <td> <a href="{{ url_for('show_document', docId=document[0]) }}"> <i class="material-symbols-outlined"
-                style="font-size:48px;color:rgb(27, 44, 70);font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0">file_open</i>
+                style="font-size:48px;color:rgb(80, 80, 80);font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0">file_open</i>
             </a> </td>
           <td> {{ document[9] }} </td>
           <td> {{ document[3] }} </td>
           <td> {{ document[1] }} </td>
           <td> {{ document[7] }} </td>
-          <td> {{ document[2] }} </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 
     <!-- Sidebar right -->
-    <div class="sidebar-right">
+    <!-- <div class="sidebar-right">
       {% if current_user.id or current_user.adgang == 1 %}
       <div class="button-file">
         <a href="{{ url_for('new_document_page', folderId = parent )}}" class="button-file2"> Upload file </a>
       </div>
       <div class="f-icon">
-        <i class="material-icons" style="font-size:15px;color:rgb(51, 86, 225)">folder</i>
+        <i class="material-icons" style="font-size:32px;color:rgb(51, 86, 225)">folder</i>
         <a href="?createfolder=True&folderId={{ parent }}"> Create new folder </a>
       </div>
       {% endif %}
@@ -107,5 +141,5 @@
       {% endif %}
       </form>
     </div>
-  </div>
-  {% endblock %}
+  </div> -->
+    {% endblock %}

@@ -1,9 +1,14 @@
+:root {
+  --main-text-color: rgb(45, 45, 45);
+}
+
+
 /* Include the padding and border in an element's total width and height */
 * {
   box-sizing: border-box;
 }
 
-.navbar {
+/* .navbar {
   background-color: rgb(0, 70, 176);
   padding-top: 10px;
   padding-bottom: 10px;
@@ -24,7 +29,7 @@
 
 .navbar a:hover {
   background-color: #ddd;
-  color: black;
+  color: rvar(--main-text-color);
 }
 
 .navbar a.active {
@@ -38,7 +43,7 @@
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
-}
+} */
 
 ul {
   margin: 0;
@@ -46,7 +51,8 @@ ul {
   list-style: none;
 }
 
-ul li {
+
+/* ul li {
   position: relative;
   padding: 12px 8px 12px 40px;
   background: #eee;
@@ -60,23 +66,69 @@ ul li {
 
 ul li:nth-child(odd) {
   background: #f9f9f9;
+} */
+
+#logo {
+  color: white;
+  opacity: 100%;
+}
+
+.navbar a {
+  color: white;
+  opacity: 85%;
+}
+
+.navbar a:hover {
+  color: white;
+  opacity: 100%;
+}
+
+.navbar-toggler {
+  color: white;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #0d6efd;
+  text-align: center;
+  overflow: hidden;
+  color: white;
+  padding-top: 16px;
+  padding-bottom: 4px;
+}
+
+.footer p {
+  color: white;
+  opacity: 85%;
 }
 
 .flashes .success {
+  margin-top: 56px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   background-color: #36c08e;
-  color: black;
+  color: var(--main-text-color);
   text-align: center;
 }
 
 .flashes .info {
-  background-color: #e1ce63;
-  color: black;
+  margin-top: 56px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #ffc107;
+  color: var(--main-text-color);
   text-align: center;
 }
 
 .flashes .danger {
-  background-color: rgb(232, 83, 83);
-  color: black;
+  margin-top: 56px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #dc3545;
+  color: var(--main-text-color);
   text-align: center;
 }
 
@@ -95,11 +147,11 @@ button {
 }
 
 h2 {
-  color: black;
+  color: var(--main-text-color);
 }
 
 p {
-  color: black;
+  color: var(--main-text-color);
 }
 
 #documents-page-parent {
@@ -116,6 +168,11 @@ p {
   min-width: 200px;
 }
 
+.create-upload-search {
+  display: flex;
+  flex-direction: row;
+}
+
 #tags {
   display: flex;
   align-content: flex-start;
@@ -123,71 +180,55 @@ p {
 }
 
 .sidebar-left {
-  width: 19%;
+  width: 15%;
+  height: 100%;
   background-color: #ededed;
   color: white;
   position: fixed;
   z-index: 1;
-  top: 4.75em;
-  left: 0.6em;
   overflow-x: hidden;
   padding-left: 1em;
-  bottom: 4.5em;
-
+  padding-right: 1em;
+  bottom: 60px;
 }
 
 .sidebar-right {
   width: 19%;
+  height: 100%;
   background-color: #ededed;
   color: white;
   position: fixed;
-  top: 4.75em;
-  right: 0.6em;
+  right: 0em;
   z-index: 1;
   overflow-x: hidden;
-  color: black;
-  bottom: 4.5em;
+  padding-top: 120px;
   padding-left: 1em;
-  padding-top: 1em;
+  padding-right: 1em;
+  bottom: 60px;
 }
 
 .main-content {
-  width: 61%;
+  width: 70%;
   background-color: #ffffff;
-  color: black;
+  color: var(--main-text-color);
   margin: auto;
   text-align: center;
   margin-top: 2em;
   bottom: 5.1em;
-  text-align: left;
   padding-left: 2em;
-  padding-top: 100px;
   top: 2em;
 }
 
 .allcontent {
+  padding-top: 50px;
   width: 100%;
-  margin-top: 3em;
+  /* margin-top: 3em; */
   margin-bottom: 6em;
 }
 
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: rgb(0, 70, 176);
-  text-align: center;
-  overflow: hidden;
-  color: white;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-
 .tags-sidebar {
-  color: black;
-  font-size: 1.1em;
+  color: var(--main-text-color);
+  font-size: 1em;
   text-decoration: none;
   list-style-type: none;
   line-height: 1.3em;
@@ -200,7 +241,21 @@ p {
 }
 
 .search-form {
-  padding-top: 3em;
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  float: right;
+  padding-left: 250px;
+}
+
+.search-form-folder {
+  /* display: flex; */
+  /* flex-direction: row; */
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding-left: 200px;
+  /* float: right; */
 }
 
 .button-control {
@@ -212,16 +267,18 @@ p {
 }
 
 .button-file {
-  width: 50%;
+  /* width: 175px; */
   float: left;
-  margin-top: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   cursor: pointer;
 }
 
 .button-file22 {
-  width: 50%;
-  float: left;
-  margin-top: -1.7em;
+  /* width: 50%; */
+  float: right;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   cursor: pointer;
 }
 
@@ -282,11 +339,12 @@ td {
 .h2h {
   padding-top: 4em;
   font-size: 1.2;
+  color: var(--main-text-color);
 }
 
 .f-icon {
-  width: 100%;
-  float: left;
+  width: 250px;
+  /* float: left; */
   margin-top: 1.5em;
   margin-bottom: 1.5em;
 }
@@ -302,6 +360,7 @@ td {
   width: 40%;
   margin: auto;
   padding-bottom: 200px;
+  color: var(--main-text-color);
 }
 
 .doc-first {
@@ -309,6 +368,7 @@ td {
   margin: auto;
   text-align: center;
   padding-top: 135px;
+  color: var(--main-text-color);
 }
 
 .doc-form {
@@ -324,13 +384,14 @@ td {
   margin-top: 0.4em;
   margin-bottom: 1em;
   align-items: center;
-  margin-left: 6em
+  margin-left: 4.5em
 }
 
 .text-control {
   font-size: 1.1em;
-  margin-left: 4.6em;
+  margin-left: 4em;
   padding-top: 1em;
+  color: var(--main-text-color);
 }
 
 .select {
@@ -347,9 +408,10 @@ td {
 }
 
 .button-place {
-  width: 20%;
+  width: 11%;
   margin: auto;
   margin-bottom: 1em;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -396,8 +458,16 @@ td {
   margin: auto;
 }
 
+.doc-content h1 {
+  font-size: 36px;
+}
+
+.doc-content h3 {
+  font-size: 24px;
+}
+
 .doc-body {
-  width: 70%;
+  width: 95%;
   margin-top: 3em;
   margin-bottom: 3em;
   margin: auto;
@@ -408,33 +478,37 @@ td {
 .filebox {
   width: 50%;
   float: left;
+  padding: 20px;
 }
 
 .infobox {
   width: 50%;
   background-color: #ececec;
   float: right;
-
+  padding: 20px;
 }
 
 .h2-file {
   text-align: center;
+  font-size: 32px;
+
 }
 
 .p-file {
-  font-size: 1.15em;
+  font-size: 1em;
   padding-left: 1em;
 }
 
 .p-comment {
-  font-size: 1.15em;
-  padding: 0.3em 1em 1em 1em;
+  font-size: 1em;
+  padding-top: 10px;
   text-align: center;
 }
 
 .filebox1 {
   width: 50%;
   float: left;
+  padding-top: 10px;
 }
 
 .filebox2 {
@@ -452,18 +526,58 @@ td {
 .commentbox {
   width: 70%;
   margin: auto;
-  background-color: #04AA6D;
+  background-color: #36c08e;
   padding: 1em 1em 1em 1em;
 }
 
 .newbox {
   width: 100%;
-  margin-top: 300px;
+  margin-top: 450px;
   margin-bottom: 300px;
-  padding-top: 20px;
 }
 
 .h2-com {
-  padding-top: 1em;
+  padding-top: 0.8em;
   padding-left: 0.5em;
+  padding-bottom: 0.4em;
+}
+
+@media only screen and (max-width: 768px) {
+  .sidebar-left {
+    display: none;
+  }
+
+  .main-content {
+    width: 95%;
+  }
+}
+
+@media (max-width: 1900px) {
+  .search-form {
+    padding-left: 300px;
+  }
+}
+
+@media (max-width: 1420px) {
+  .search-form {
+    padding-left: 100px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .search-form {
+    padding-left: 50px;
+  }
+}
+
+@media (max-width: 900px) {
+  .search-form {
+    padding-left: 25px;
+  }
+}
+
+@media (max-width: 799px) {
+  .search-form {
+    padding-left: 2px;
+  }
 }
