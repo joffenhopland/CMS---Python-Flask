@@ -123,7 +123,7 @@ def show_document(docId):
             return redirect(url_for('show_document', docId=docId))
         else:
             return render_template("document.html", document=document, comment_form=comment_form, all_comments=all_comments, form=form)
-    
+
     return redirect(url_for("home_page", docId=docId))
 
 
@@ -281,7 +281,7 @@ def delete_document_page(docId):
         else:
             flash("Successfully deleted document!", "success")
             return redirect(url_for('home_page'))
-    
+
     return redirect(url_for("home_page"))
 
 
@@ -325,7 +325,6 @@ def preview_page(docId):
         bytes_io = BytesIO(image_bytes)
         filename = doc_object.dokumentnavn
         return send_file(bytes_io, attachment_filename=filename)
-    
 
 
 @ app.route('/delete-comment/<int:comment_id>', methods=["GET", "POST"])
@@ -338,11 +337,11 @@ def delete_comment_page(comment_id):
         database.deleteComment(comment_id)
         flash("Successfully deleted comment!", "success")
         return redirect(url_for('show_document', docId=docId))
-    
+
     return redirect(url_for("home_page"))
 
 
 app.secret_key = secrets.token_urlsafe(16)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
